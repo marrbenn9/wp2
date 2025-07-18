@@ -1,39 +1,42 @@
-const mongoose = require('mongoose')
-const express = require('express')
-const app = express()
-const User = require('./models/User')
-
+const mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+const User = require('./models/User');
 
 const PORT = process.env.PORT || 4000;
+const MONGO_URI = process.env.MONGO_URI; // 🔐 Use environment variable
 
-async function mong_connect(){
-    try {
-        let x = await mongoose.connect('mongodb+srv://marrbenn1:reuben123@cluster1.kx7dslo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1')
-        console.log('Mongoose Success!')
-        
-    } catch (err) {
-        console.log(`Mongo Error: ${err}`)
-    }
-    
-   
+// Middleware (optional but useful)
+app.use(express.json()); // If you plan to receive JSON in requests
+
+// MongoDB connection
+async function mong_connect() {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log('✅ Mongoose connected successfully!');
+  } catch (err) {
+    console.error(`❌ Mongo Error: ${err.message}`);
+  }
 }
 
-mong_connect()
+mong_connect();
 
-app.listen(PORT, () => {
-    console.log("Server running on port 4000")
-})
-
+// Routes
 app.get('/', (req, res) => {
-    res.send('Hello from backend!')
-})
+  res.send('Hello from backend!');
+});
 
 app.get('/users', async (req, res) => {
   try {
     const users = await User.find(); // Fetch all users
     res.json(users); // Send as JSON
   } catch (err) {
+    console.error(err);
     res.status(500).send('Server Error');
   }
 });
 
+// Start server
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
