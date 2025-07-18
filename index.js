@@ -4,6 +4,8 @@ const app = express()
 const User = require('./models/User')
 
 
+const PORT = process.env.PORT || 4000;
+
 async function mong_connect(){
     try {
         let x = await mongoose.connect('mongodb+srv://marrbenn1:reuben123@cluster1.kx7dslo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1')
@@ -18,7 +20,7 @@ async function mong_connect(){
 
 mong_connect()
 
-app.listen(4000, () => {
+app.listen(PORT, () => {
     console.log("Server running on port 4000")
 })
 
