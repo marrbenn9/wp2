@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const User = require('./models/User');
+const dotenv = require('dotenv').config()
 
 const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI; // 🔐 Use environment variable
